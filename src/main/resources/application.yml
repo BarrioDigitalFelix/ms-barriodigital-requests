@@ -1,0 +1,51 @@
+server:
+  port: 8082
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: always
+
+spring:
+  application:
+    name: ms-barriodigital-requests
+
+  datasource:
+    url: jdbc:postgresql://ep-billowing-glade-acuwy0c8-pooler.sa-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+    username: neondb_owner
+    password: npg_giGnpC28weKo
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  # Usar el nombre del contenedor 'barriodigital-rabbitmq' definido en Docker
+  rabbitmq:
+    host: ${SPRING_RABBITMQ_HOST:barriodigital-rabbitmq}
+    port: 5672
+    username: guest
+    password: guest
+
+  # Usar el nombre del contenedor 'barriodigital-kafka' definido en Docker
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:barriodigital-kafka:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+# Usar el nombre exacto del contenedor 'barriodigital-catalog' dentro de la red Docker
+services:
+  catalog-url: ${SERVICES_CATALOG_URL:http://barriodigital-catalog:8081/api/catalog}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always
