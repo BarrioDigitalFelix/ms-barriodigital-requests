@@ -1,7 +1,9 @@
 package com.barriodigital.requests.controller;
 
+import com.barriodigital.requests.model.Notification;
 import com.barriodigital.requests.model.RequestEntity;
 import com.barriodigital.requests.model.RequestStatus;
+import com.barriodigital.requests.repository.NotificationRepository;
 import com.barriodigital.requests.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,11 +15,13 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/requests")
-@CrossOrigin(origins = "*")
 public class RequestController {
 
     @Autowired
     private RequestService service;
+
+    @Autowired
+    private NotificationRepository notificationRepository;
 
     @GetMapping
     public ResponseEntity<List<RequestEntity>> getAll() {
@@ -27,6 +31,11 @@ public class RequestController {
     @GetMapping("/{id}")
     public ResponseEntity<RequestEntity> getById(@PathVariable Long id) {
         return ResponseEntity.ok(service.getById(id));
+    }
+
+    @GetMapping("/notifications")
+    public ResponseEntity<List<Notification>> getNotificationsByCitizen(@RequestParam String citizenId) {
+        return ResponseEntity.ok(notificationRepository.findByCitizenIdOrderByCreatedAtDesc(citizenId));
     }
 
     @PostMapping
