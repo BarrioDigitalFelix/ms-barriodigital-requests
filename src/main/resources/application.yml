@@ -45,7 +45,7 @@ rabbitmq:
 
 # URL del Microservicio de Catálogo (Usa el nombre del contenedor Docker)
 services:
-  catalog-url: ${SERVICES_CATALOG_URL:http://barriodigital-catalog:8081/api/catalog}
+  catalog-url: ${SERVICES_CATALOG_URL:http://ms-barriodigital-catalog:8081/api/catalog}
 
 # Actuator Health Check
 management:
