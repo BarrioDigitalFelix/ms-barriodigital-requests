@@ -102,6 +102,7 @@ public class RequestService {
     private void publishKafkaEvent(String topic, RequestEntity entity, RequestStatus oldStatus) {
         try {
             Map<String, Object> event = new HashMap<>();
+            event.put("eventId", UUID.randomUUID().toString());
             event.put("requestId", entity.getId());
             event.put("oldStatus", oldStatus != null ? oldStatus.name() : null);
             event.put("newStatus", entity.getStatus().name());
